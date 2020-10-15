@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const {authUser} = require('../middleware/auth')
 const {
   registerUser,
   loginUser,
@@ -18,9 +19,9 @@ router.post("/login", loginUser);
 router.post("/register", registerUser);
 
 // PATCH
-router.patch("/update/profile/:id", patchUser);
-router.patch("/update/location/:id", patchLocation);
-router.patch("/update/image/:id", uploadFilter, patchImageUser);
+router.patch("/update/profile/:id", authUser, patchUser);
+router.patch("/update/location/:id", authUser, patchLocation);
+router.patch("/update/image/:id", authUser, uploadFilter, patchImageUser);
 
 // HAMA
 router.get("/:id", getUserById);

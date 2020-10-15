@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { authUser } = require("../middleware/auth");
 const {
   addFriend,
   getListFriend,
@@ -6,10 +7,10 @@ const {
 } = require("../controller/FriendController");
 
 // POST
-router.post("/add", addFriend);
+router.post("/add", authUser, addFriend);
 
 // GET
-router.get("/list/:id", getListFriend);
-router.get("/location/:id", getFriendLocation);
+router.get("/list/:id", authUser, getListFriend);
+router.get("/location/:id", authUser, getFriendLocation);
 
 module.exports = router;
