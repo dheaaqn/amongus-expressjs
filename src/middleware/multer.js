@@ -22,7 +22,7 @@ const fileFilter = (req, file, callback) => {
   }
 };
 
-let upload = multer({ storage, fileFilter }).single("user_image");
+let upload = multer({ storage, fileFilter, limits: { fileSize: 2097152 } }).single("user_image");
 
 const uploadFilter = (request, response, next) => {
   upload(request, response, function (err) {
