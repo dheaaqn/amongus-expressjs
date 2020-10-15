@@ -40,25 +40,11 @@ const msgModel = require("./src/model/Message");
 io.on("connection", (socket) => {
   console.log("socket connected");
 
-  socket.on("privateMessage", (id) => {
-    socket.join(`room: ${id}`);
+  socket.on('joinRoom', (id) => {
+    socket.join(`room: ${id}`)
+  })
 
-    // get chat history
-    msgModel
-      .getMessageByRoom(id)
-      .then((result) => {
-        for (i = 0; i < result.length; i++) {
-          io.to(`room: ${id}`).emit("chatMessage", result[i]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
-
-  // send message
   socket.on("sendMessage", (data, callback) => {
-    // add message to database
     const setData = {
       room_id: data.room_id,
       msg_body: data.msg_body,
@@ -66,17 +52,25 @@ io.on("connection", (socket) => {
       msg_receiver_id: data.msg_receiver_id,
       msg_created_at: new Date(),
     };
-
+    
     msgModel
       .insertMessage(setData)
       .then(() => {
-        // send to receiver
         io.to(`room: ${data.room_id}`).emit("chatMessage", setData);
       })
       .catch((error) => {
         console.log(error);
       });
   });
+
+  socket.on('sendNotification', (data) => {
+    socket.broadcast.emit('showNotification', data)
+    console.log(data)
+  })
+
+  socket.on('typing', (data) => {
+    socket.broadcast.emit('typingMessage', data.user_name)
+	})
 
   socket.on("disconnect", () => {
     console.log("disconnected from socket");
