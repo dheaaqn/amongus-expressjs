@@ -1,5 +1,5 @@
 const helper = require("../helper/helper.js");
-const { getMessageByRoom } = require("../model/Message.js");
+const { getMessageByRoom, getRecentMessage } = require("../model/Message.js");
 const {
   createRoom,
   checkRoom,
@@ -50,9 +50,16 @@ module.exports = {
         const userData = await getUserById(result[i].receiver_id);
         result[i].user_name = userData[0].user_name;
         result[i].user_image = userData[0].user_image;
+        const recentMsg  = await getRecentMessage(result[i].room_id)
+        if (recentMsg.length > 0) {
+          result[i].user_msg = recentMsg[0].msg_body 
+        } else {
+          result[i].user_msg = 'Start Messaging'
+        }
       }
       return helper.response(res, 200, "Get All List Room", result);
     } catch (error) {
+      console.log(error)
       return helper.response(res, 400, "Bad Request");
     }
   },

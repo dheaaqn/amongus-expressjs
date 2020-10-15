@@ -23,4 +23,11 @@ module.exports = {
       );
     });
   },
+  getRecentMessage: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(`SELECT * FROM messages WHERE room_id = ? ORDER BY msg_created_at DESC LIMIT 1`, id, (error, result) => {
+        !error ? resolve(result) : console.log(error);
+      })
+    })
+  }
 };
