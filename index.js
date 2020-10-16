@@ -41,6 +41,7 @@ io.on("connection", (socket) => {
   console.log("socket connected");
 
   socket.on('joinRoom', (id) => {
+    console.log(id)
     socket.join(`room: ${id}`)
   })
 
@@ -69,13 +70,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on('sendNotification', (data) => {
-    // socket.broadcast.emit('showNotification', data)
     socket.broadcast.to(`user: ${data.msg_receiver_id}`).emit('showNotification', data)
     console.log(data)
   })
 
   socket.on('typing', (data) => {
-    socket.broadcast.emit('typingMessage', data.user_name)
+    socket.broadcast.to(`room: ${data.room_id}`).emit('typingMessage', data)
+    console.log(data)
 	})
 
   socket.on("disconnect", () => {
