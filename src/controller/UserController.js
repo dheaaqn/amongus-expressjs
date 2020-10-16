@@ -25,7 +25,7 @@ module.exports = {
       user_name,
       user_status: 1,
       user_phone: "",
-      user_image: "unamed.png",
+      user_image: "blank-profile.jpg",
       user_created_at: new Date(),
     };
 
@@ -100,7 +100,7 @@ module.exports = {
       };
       const checkId = await getUserById(id);
       if (checkId.length > 0) {
-        if (checkId[0].user_image === "unamed.png" || req.file == undefined) {
+        if (checkId[0].user_image === "blank-profile.jpg" || req.file == undefined) {
           const result = await patchUser(setData, id);
           return helper.response(res, 201, "Profile Updated", result);
         } else {
@@ -161,4 +161,21 @@ module.exports = {
       return helper.response(res, 400, "Bad Request");
     }
   },
+  deleteImageUser: async (req, res) => {
+    const {id} = req.params;
+    try {
+      const userData = await getUserById(id);
+      if (userData[0].user_image === 'blank-profile.jpg') {
+        return helper.response(res, 400, 'Your profile picture already deleted');
+      } else {
+        const setData = {
+          user_image: 'blank-profile.jpg'
+        }
+        const result = await patchUser(setData, id);
+        return helper.response(res, 200, `Profile pict deleted`, result);
+      }
+    } catch (error) {
+      return helper.response(res, 400, "Bad Request");
+    }
+  }
 };
