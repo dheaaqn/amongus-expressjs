@@ -44,6 +44,11 @@ io.on("connection", (socket) => {
     socket.join(`room: ${id}`)
   })
 
+  socket.on('userJoin', (id) => {
+    socket.join(`user: ${id}`)
+    console.log(id)
+  })
+
   socket.on("sendMessage", (data, callback) => {
     const setData = {
       room_id: data.room_id,
@@ -64,7 +69,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on('sendNotification', (data) => {
-    socket.broadcast.emit('showNotification', data)
+    // socket.broadcast.emit('showNotification', data)
+    socket.broadcast.to(`user: ${data.msg_receiver_id}`).emit('showNotification', data)
     console.log(data)
   })
 
