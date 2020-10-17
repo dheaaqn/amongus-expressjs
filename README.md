@@ -1,6 +1,7 @@
 <h1 align="center">ExpressJS - Among Us RESTfull API</h1>
 
-Realtime chat app. [More about Express](https://en.wikipedia.org/wiki/Express.js)
+Among us is REST API for among us realtime chat app. Simple application to CRUD database with NodeJS, Express, and MySql.
+This application use JWT to authentication and authorization. [More about Express](https://en.wikipedia.org/wiki/Express.js)
 
 ## Built With
 
@@ -34,32 +35,25 @@ DB_HOST=localhost // Database host
 DB_USER=root // Database Username
 DB_PASS= // Database Password
 DB_NAME=telegram_backend // Your Database Name
+
+PORT=3000
+IP=127.0.0.1
 ```
 
 ## End Point
 
-Postman <a href="https://documenter.getpostman.com/view/6648790/TVCiUmVA">Collection</a>
+Postman <a href="https://documenter.getpostman.com/view/6648790/TVRrV4du">Collection</a>
 
-**1. GET**
+## Run the app
 
-- `/product`(Get all product)
-- `/product/:id` (Get product by id)
-- `/category` (Get all category)
-- `/category/:id` (Get category by id)
-- `/order`(Get all order)
-- `/history`(Get all history)
+Development mode
 
-**2. POST**
+```bash
+$ npm run dev
+```
 
-- `/product` (Post product)
-  - `{ "product_name": "Tacos", "category_id": 2, "product_harga": 85000 , "product_status" : 1 | 0}`
+Deploy mode
 
-**3. PATCH**
-
-- `/product/:id` (Update product by id)
-
-  - `{"product_name" : "Tequila", "category_id" : 1, "product_harga" : 186000, "product_status" : 1 | 0}`
-
-**4. DELETE**
-
-- `/product/:id` (Delete product by id)
+```bash
+$ npm start
+```
